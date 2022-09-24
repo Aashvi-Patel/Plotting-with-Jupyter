@@ -1,0 +1,40 @@
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from matplotlib import pyplot as plt
+
+#load the CSV file into the dataframe
+data = pd.read_csv(r'fastgreendata.csv')
+
+#test if correct data has been loaded (un comment line 10)
+#print(data)
+
+#define x and y values
+x = data['Final Fast Green Concentration']
+y = data['OD_635 avg']
+
+
+linreg = LinearRegression()
+x = x.values.reshape(-1,1)
+linreg.fit(x,y)
+y.predict = linreg.predict(x)
+
+plt.scatter(x,y)
+plt.plot(x,y.predict, color='teal')
+
+#find slope, y-intercept, and R squared value
+slope = linreg.coef_
+intercept = linreg.intercept_
+Rsqr = linreg.score(x,y)
+
+#set titles and axis labels
+plt.title("Fast Green Standard Curve")
+plt.xlabel("Final Fast Green Concentration")
+plt.ylabel("OD_635 avg")
+
+#add grid to graph
+plt.grid
+
+#print equation of the line and the R squared value
+print("y =",slope,"x","+",intercept)
+print("R^2=",Rsqr)
